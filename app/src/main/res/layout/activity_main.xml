@@ -4,10 +4,81 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.iveci.mad10.MainActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="1">
+        <CheckBox
+            android:text="Stamp"
+            android:id="@+id/stamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <Button
+            android:tag="erase"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ERASER"
+            android:layout_weight="1"/>
+        <Button
+            android:tag="open"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OPEN"
+            android:layout_weight="1"
+            />
+        <Button
+            android:id="@+id/save"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SAVE"
+            android:layout_weight="1"/>
+    </LinearLayout>
 
     <com.example.iveci.mad10.MyCanvas
-        android:background="#FF0000"
+        android:id="@+id/canv"
         android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_height="wrap_content"
+        android:layout_weight="15"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="1">
+        <Button
+            android:tag="rotate"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ROTATE"
+            android:layout_weight="1"/>
+        <Button
+            android:tag="move"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MOVE"
+            android:layout_weight="1"/>
+        <Button
+            android:tag="scale"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SCALE"
+            android:layout_weight="1"/>
+        <Button
+            android:tag="skew"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SKEW"
+            android:layout_weight="1"/>
+    </LinearLayout>
 </LinearLayout>
