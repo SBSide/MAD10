@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         int permissioninfo = ContextCompat.checkSelfPermission(this,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permissioninfo == PackageManager.PERMISSION_GRANTED) {
-            File file = new File(getExternalPath() + "canvas");
+            File file = new File(getFilesDir() + "canvas");
             if (!file.exists()) {
                 file.mkdir();
                 String msg = "디렉터리 생성";
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public String getExternalPath(){
+/*    public String getExternalPath(){
         String sdPath ="";
         String ext = Environment.getExternalStorageState();
         if(ext.equals(Environment.MEDIA_MOUNTED)){
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else sdPath = getFilesDir() + "";
         return sdPath;
-    }
+    }*/
 
     public void onClick(View v){
         if(v.getId() == R.id.save){
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                     .setPositiveButton("저장", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            if (myCanvas.Save(getExternalPath() + "canvas/"+
+                            if (myCanvas.Save(getFilesDir() + "canvas/"+
                                     text.getText().toString() + ".jpg"))
                                 Toast.makeText(getApplicationContext(),
                                         "저장에 성공했습니다.",Toast.LENGTH_SHORT).show();
