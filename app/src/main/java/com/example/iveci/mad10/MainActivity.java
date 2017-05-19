@@ -66,15 +66,30 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == 1){
-            myCanvas.setOptType("BLUR");
+            if (item.isChecked()){
+                myCanvas.setOptType("BLUR");
+            }
+            else{
+
+            }
             item.setChecked(!item.isChecked());
         }
         else if(item.getItemId() == 2){
-            myCanvas.setOptType("COLOR");
+            if (item.isChecked()){
+                myCanvas.setOptType("COLOR");
+            }
+            else{
+
+            }
             item.setChecked(!item.isChecked());
         }
         else if(item.getItemId() == 3){
-            myCanvas.setOptType("BIG");
+            if (item.isChecked()){
+                myCanvas.setOptType("BIG");
+            }
+            else{
+
+            }
             item.setChecked(!item.isChecked());
         }
         else if(item.getItemId() == 4){
