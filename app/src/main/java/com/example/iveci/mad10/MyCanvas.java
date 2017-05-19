@@ -1,25 +1,16 @@
 package com.example.iveci.mad10;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.Rect;
-import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
