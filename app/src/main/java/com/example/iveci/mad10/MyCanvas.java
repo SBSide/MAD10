@@ -24,7 +24,7 @@ import java.io.IOException;
 public class MyCanvas extends View {
     Bitmap mBitmap;
     Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round);;
-    Boolean stamp, blurring, color, penb = false;
+    Boolean stamp = false, blurring = false, color = false, penb = false;
     Canvas mCanvas;
     Paint mPaint = new Paint();
     String opt = "";
@@ -56,6 +56,7 @@ public class MyCanvas extends View {
             BlurMaskFilter blur = new BlurMaskFilter(100, BlurMaskFilter.Blur.NORMAL);
             mPaint.setMaskFilter(blur);
         }
+        else mPaint.setMaskFilter(null);
         float[] array = {
                 1, 0, 0, 0, -25f,
                 0, 1, 0, 0, -25f,
