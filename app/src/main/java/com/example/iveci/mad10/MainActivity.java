@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -17,12 +19,20 @@ import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
     MyCanvas myCanvas;
+    CheckBox c;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTitle("MY CANVAS.");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         myCanvas = (MyCanvas) findViewById(R.id.canv);
+        c = (CheckBox) findViewById(R.id.stamp);
+        c.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                myCanvas.setStamp(isChecked);
+            }
+        });
         int permissioninfo = ContextCompat.checkSelfPermission(this,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permissioninfo == PackageManager.PERMISSION_GRANTED) {
@@ -70,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 myCanvas.setOptType("BLUR");
             }
             else{
-
+                myCanvas.setOptType("");
             }
             item.setChecked(!item.isChecked());
         }
@@ -79,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 myCanvas.setOptType("COLOR");
             }
             else{
-
+                myCanvas.setOptType("");
             }
             item.setChecked(!item.isChecked());
         }
@@ -88,12 +98,12 @@ public class MainActivity extends AppCompatActivity {
                 myCanvas.setOptType("BIG");
             }
             else{
-
+                myCanvas.setOptType("");
             }
             item.setChecked(!item.isChecked());
         }
         else if(item.getItemId() == 4){
-            myCanvas.setOptType("REDD");
+            myCanvas.setOptType("RED");
         }
         else if(item.getItemId() == 5){
             myCanvas.setOptType("BLUE");
@@ -101,35 +111,25 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-/*    public String getExternalPath(){
-        String sdPath ="";
-        String ext = Environment.getExternalStorageState();
-        if(ext.equals(Environment.MEDIA_MOUNTED)){
-            sdPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
-        }
-        else sdPath = getFilesDir() + "";
-        return sdPath;
-    }*/
-
     public void onClick(View v){
-        if(v.getId() == R.id.save){
-            final EditText text = new EditText(this);
-            AlertDialog.Builder dlg = new AlertDialog.Builder(this);
-            dlg.setTitle("저장")
-                    .setMessage("저장할 이름을 입력 후, 저장하세요.")
-                    .setView(text)
-                    .setPositiveButton("저장", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (myCanvas.Save(getFilesDir() + "canvas/"+
-                                    text.getText().toString() + ".jpg"))
-                                Toast.makeText(getApplicationContext(),
-                                        "저장에 성공했습니다.",Toast.LENGTH_SHORT).show();
-                            else Toast.makeText(getApplicationContext(),
-                                    "저장에 실패했습니다.",Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .setNegativeButton("취소", null).show();
+        if(v.getId() == R.id.erase){
+            myCanvas.clear();
+        }
+        else if(v.getId() == R.id.open){
+
+        }
+        else if(v.getId() == R.id.save){
+            if (myCanvas.Save(getFilesDir() + "canvas/"+
+                    "canvas.jpg"))
+                Toast.makeText(getApplicationContext(),
+                        "저장에 성공했습니다.",Toast.LENGTH_SHORT).show();
+            else Toast.makeText(getApplicationContext(),
+                    "저장에 실패했습니다.",Toast.LENGTH_SHORT).show();
+        }
+        else if(v.getId() == R.id.rotate){
+            c.setChecked(true);
+            myCanvas.setStamp(true);
+            myCanvas.setOptType("rotate");
         }
         else myCanvas.setOptType((String) v.getTag());
     }

@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -22,83 +23,57 @@ import java.io.IOException;
 
 public class MyCanvas extends View {
     Bitmap mBitmap;
+    Bitmap bitmap;
+    Boolean stamp = false;
     Canvas mCanvas;
     Paint mPaint = new Paint();
     String opt = "";
     public MyCanvas(Context context) {
         super(context);
         this.setLayerType(LAYER_TYPE_SOFTWARE, null);
-        mPaint.setColor(Color.CYAN);
+        this.mPaint.setColor(Color.BLACK);
     }
 
     public MyCanvas(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        mPaint.setColor(Color.CYAN);
+        this.setLayerType(LAYER_TYPE_SOFTWARE, null);
+        this.mPaint.setColor(Color.BLACK);
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-
         super.onSizeChanged(w, h, oldw, oldh);
         mBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         mCanvas = new Canvas();
-
         mCanvas.setBitmap(mBitmap);
-        mCanvas.drawColor(Color.YELLOW);
+        mCanvas.drawColor(Color.WHITE);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Paint paint = new Paint();
-        paint.setColor(Color.YELLOW);
-
-        Bitmap img = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-        Bitmap bigImg = Bitmap.createScaledBitmap(img,img.getWidth()*2, img.getHeight()*2,false);
-        int cenX = (canvas.getWidth() - bigImg.getWidth())/2;
-        int cenY = (canvas.getHeight() - bigImg.getHeight())/2;
-        if(opt.equals("rotate"))
-            canvas.rotate(45,this.getWidth()/2, this.getHeight()/2);
-        else if (opt.equals("move"))
-            ;
-        else if (opt.equals("scale"))
-            ;
-        else if (opt.equals("skew"))
-            ;
-        else if (opt.equals("erase"))
-            mBitmap.eraseColor(Color.WHITE);
-        else if (opt.equals("open"))
-            ;
-        invalidate();
+        mPaint.setColor(Color.BLACK);
         BlurMaskFilter blur = new BlurMaskFilter(100, BlurMaskFilter.Blur.NORMAL);
-        paint.setMaskFilter(blur);
-        canvas.drawBitmap(bigImg, cenX, cenY, paint);
-        /*        canvas.drawBitmap(img, 300, 350, paint);
-        Bitmap smallBitmap = Bitmap.createScaledBitmap(img,img.getWidth()/2, img.getHeight()/2,false);
-        canvas.drawBitmap(smallBitmap, 400, 350, paint);
-
-        Bitmap bigBitmap = Bitmap.createScaledBitmap(img,img.getWidth()*2, img.getHeight()*2,false);
-        canvas.drawBitmap(bigBitmap, 100, 100, paint);
-        img.recycle();*/
+        mPaint.setMaskFilter(blur);
         float[] array = {
                 1, 0, 0, 0, -25f,
                 0, 1, 0, 0, -25f,
                 0, 0, 1, 0, -25f,
                 0, 0, 0, 2, 0
         };
-/*
-        ColorMatrix colorMatrix = new ColorMatrix(array);
-        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(colorMatrix);
-        paint.setColorFilter(filter);
-        canvas.drawBitmap(bigImg, cenX, cenY, paint);*/
-
-        if(stopX != -1 && stopY != -1) canvas.drawBitmap(img, stopX, stopY, paint);
-
+        if(mBitmap != null) canvas.drawBitmap(mBitmap, 0, 0, null);
     }
-
-    float startX = -1, startY = -1, stopX = -1, stopY = -1;
 
     public void setOptType(String opt){
         this.opt = opt;
+    }
+
+    public void clear(){
+        mBitmap.eraseColor(Color.WHITE);
+        invalidate();
+    }
+
+    public void setStamp(boolean stamp){
+        this.stamp = stamp;
     }
 
     public boolean Save(String file_name) {
@@ -116,19 +91,49 @@ public class MyCanvas extends View {
         return false;
     }
 
+    int oldX = -1, oldY = -1;
     @Override
-    public boolean onTouchEvent(MotionEvent event){
-        int x = (int) event.getX();
-        int y = (int) event.getY();
+    public boolean onTouchEvent(MotionEvent event) {
+        int X = (int) event.getX();
+        int Y = (int) event.getY();
         if(event.getAction() == MotionEvent.ACTION_DOWN){
-            startX = event.getX(); startY = event.getY();
+            oldX = X; oldY = Y;
         }
         else if(event.getAction() == MotionEvent.ACTION_MOVE){
-
+            if (oldX != -1 && !stamp) {
+                mCanvas.drawLine(oldX, oldY, X, Y, mPaint);
+                oldX = X;
+                oldY = Y;
+                invalidate();
+            }
         }
         else if(event.getAction() == MotionEvent.ACTION_UP){
-            stopX = event.getX(); stopY = event.getY();
-            invalidate();
+            if (oldX != -1 && !stamp) {
+                mCanvas.drawLine(oldX, oldY, X, Y, mPaint);
+                invalidate();
+            }
+            else if (stamp){
+                if (opt.equals("rotate")) {
+                    Matrix matrix = new Matrix();
+                    matrix.preRotate(30,0,0);
+                    bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round);
+                    bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
+                }
+                else if (opt.equals("move"))
+                    ;
+                else if (opt.equals("scale"))
+                    ;
+                else if (opt.equals("skew"))
+                    ;
+                else {
+                    bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round);
+
+                }
+                mCanvas.drawBitmap(bitmap, X, Y, mPaint);
+                invalidate();
+            }
+            oldX = -1;
+            oldY = -1;
         }
         return true;
     }

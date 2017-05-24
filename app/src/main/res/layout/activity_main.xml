@@ -18,14 +18,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
         <Button
-            android:tag="erase"
+            android:id="@+id/erase"
             android:onClick="onClick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ERASER"
             android:layout_weight="1"/>
         <Button
-            android:tag="open"
+            android:id="@+id/open"
             android:onClick="onClick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
         android:orientation="horizontal"
         android:layout_weight="1">
         <Button
-            android:tag="rotate"
+            android:id="@+id/rotate"
             android:onClick="onClick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
