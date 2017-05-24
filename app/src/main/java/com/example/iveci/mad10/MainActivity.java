@@ -68,8 +68,10 @@ public class MainActivity extends AppCompatActivity {
         menu.add(0,3,2,"Pen Width Big");
         menu.findItem(3)
                 .setCheckable(true);
-        menu.add(0,4,3,"Pen Color BLUE");
-        menu.add(0,5,4,"Pen Color GREEN");
+        menu.add(0,4,3,"Pen Color BLACK");
+        menu.add(0,5,4,"Pen Color RED");
+        menu.add(0,6,5,"Pen Color GREEN");
+        menu.add(0,7,6,"Pen Color BLUE");
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -88,10 +90,16 @@ public class MainActivity extends AppCompatActivity {
             item.setChecked(!item.isChecked());
         }
         else if(item.getItemId() == 4){
-            myCanvas.setOptType("RED");
+            myCanvas.setPenColor(MyCanvas.pencolor.black);
         }
         else if(item.getItemId() == 5){
-            myCanvas.setOptType("BLUE");
+            myCanvas.setPenColor(MyCanvas.pencolor.red);
+        }
+        else if(item.getItemId() == 6){
+            myCanvas.setPenColor(MyCanvas.pencolor.green);
+        }
+        else if(item.getItemId() == 7){
+            myCanvas.setPenColor(MyCanvas.pencolor.blue);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -101,7 +109,10 @@ public class MainActivity extends AppCompatActivity {
             myCanvas.clear();
         }
         else if(v.getId() == R.id.open){
-
+            if (!myCanvas.Load(getFilesDir() + "canvas/"+
+                    "canvas.jpg"))
+                Toast.makeText(getApplicationContext(),
+                        "불러오기를 실패했습니다.",Toast.LENGTH_SHORT).show();
         }
         else if(v.getId() == R.id.save){
             if (myCanvas.Save(getFilesDir() + "canvas/"+

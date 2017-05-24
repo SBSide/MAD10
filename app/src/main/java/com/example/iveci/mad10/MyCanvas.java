@@ -15,6 +15,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,7 +27,8 @@ import java.io.IOException;
 public class MyCanvas extends View {
     Bitmap mBitmap;
     Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round);;
-    Boolean stamp = false, blurring = false, color = false, penb = false;
+    private Boolean stamp = false, blurring = false, color = false, penb = false;
+    enum pencolor {black, red, green, blue};
     Canvas mCanvas;
     Paint mPaint = new Paint();
     String opt = "";
@@ -53,7 +55,6 @@ public class MyCanvas extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        mPaint.setColor(Color.BLACK);
         if (blurring){
             BlurMaskFilter blur = new BlurMaskFilter(100, BlurMaskFilter.Blur.NORMAL);
             mPaint.setMaskFilter(blur);
@@ -79,6 +80,13 @@ public class MyCanvas extends View {
         this.opt = opt;
     }
 
+    public void setPenColor(pencolor pen) {
+        if (pen == pencolor.black) mPaint.setColor(Color.BLACK);
+        else if (pen == pencolor.red) mPaint.setColor(Color.RED);
+        else if (pen == pencolor.green) mPaint.setColor(Color.GREEN);
+        else if (pen == pencolor.blue) mPaint.setColor(Color.BLUE);
+    }
+
     public void clear(){
         mBitmap.eraseColor(Color.WHITE);
         invalidate();
@@ -90,6 +98,7 @@ public class MyCanvas extends View {
 
     public void setStamp(boolean stamp){
         this.stamp = stamp;
+        if (!stamp) setOptType("");
     }
 
     public void setColoring(boolean color){
@@ -108,6 +117,18 @@ public class MyCanvas extends View {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean Load(String file_name) {
+        try {
+            Bitmap bittemp = BitmapFactory.decodeFile(file_name).copy(Bitmap.Config.ARGB_8888, true);
+            mCanvas.drawBitmap(bittemp, 0, 0, null);
+            invalidate();
+            return true;
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
