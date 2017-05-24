@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
@@ -57,12 +59,18 @@ public class MyCanvas extends View {
             mPaint.setMaskFilter(blur);
         }
         else mPaint.setMaskFilter(null);
-        float[] array = {
-                1, 0, 0, 0, -25f,
-                0, 1, 0, 0, -25f,
-                0, 0, 1, 0, -25f,
-                0, 0, 0, 2, 0
-        };
+        if (color){
+            float[] array = {
+                    2f, 0f, 0f, 0f, -25f,
+                    0f, 2f, 0f, 0f, -25f,
+                    0f, 0f, 2f, 0f, -25f,
+                    0f, 0f, 0f, 2f, 0f
+            };
+            ColorMatrix matrix = new ColorMatrix(array);
+            mPaint.setColorFilter(new ColorMatrixColorFilter(matrix));
+        }
+        else mPaint.setColorFilter(null);
+
         if(mBitmap != null) canvas.drawBitmap(mBitmap, 0, 0, null);
     }
 
