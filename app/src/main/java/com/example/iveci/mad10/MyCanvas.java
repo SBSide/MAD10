@@ -23,8 +23,8 @@ import java.io.IOException;
 
 public class MyCanvas extends View {
     Bitmap mBitmap;
-    Bitmap bitmap;
-    Boolean stamp = false;
+    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round);;
+    Boolean stamp, blurring, color, penb = false;
     Canvas mCanvas;
     Paint mPaint = new Paint();
     String opt = "";
@@ -52,8 +52,10 @@ public class MyCanvas extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         mPaint.setColor(Color.BLACK);
-        BlurMaskFilter blur = new BlurMaskFilter(100, BlurMaskFilter.Blur.NORMAL);
-        mPaint.setMaskFilter(blur);
+        if (blurring){
+            BlurMaskFilter blur = new BlurMaskFilter(100, BlurMaskFilter.Blur.NORMAL);
+            mPaint.setMaskFilter(blur);
+        }
         float[] array = {
                 1, 0, 0, 0, -25f,
                 0, 1, 0, 0, -25f,
@@ -72,10 +74,20 @@ public class MyCanvas extends View {
         invalidate();
     }
 
+    public void setBlurring(boolean blurring){
+        this.blurring = blurring;
+    }
+
     public void setStamp(boolean stamp){
         this.stamp = stamp;
     }
 
+    public void setColoring(boolean color){
+        this.color = color;
+    }
+    public void setB(boolean penb){
+        this.penb = penb;
+    }
     public boolean Save(String file_name) {
         try {
             FileOutputStream out = new FileOutputStream(file_name);
@@ -113,24 +125,22 @@ public class MyCanvas extends View {
                 invalidate();
             }
             else if (stamp){
+                mCanvas.save();
                 if (opt.equals("rotate")) {
-                    Matrix matrix = new Matrix();
-                    matrix.preRotate(30,0,0);
-                    bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round);
-                    bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
+                    mCanvas.rotate(30,this.getWidth()/2, this.getHeight()/2);
                 }
-                else if (opt.equals("move"))
-                    ;
-                else if (opt.equals("scale"))
-                    ;
-                else if (opt.equals("skew"))
-                    ;
-                else {
-                    bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_round);
-
+                else if (opt.equals("move")){
+                    mCanvas.translate(10,10);
+                }
+                else if (opt.equals("scale")){
+                    mCanvas.scale(1.5f, 1.5f);
+                }
+                else if (opt.equals("skew")){
+                    mCanvas.skew(0.2f,0);
                 }
                 mCanvas.drawBitmap(bitmap, X, Y, mPaint);
                 invalidate();
+                mCanvas.restore();
             }
             oldX = -1;
             oldY = -1;

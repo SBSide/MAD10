@@ -53,7 +53,7 @@
         android:orientation="horizontal"
         android:layout_weight="1">
         <Button
-            android:id="@+id/rotate"
+            android:tag="rotate"
             android:onClick="onClick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

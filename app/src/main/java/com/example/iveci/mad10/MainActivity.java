@@ -76,30 +76,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == 1){
-            if (item.isChecked()){
-                myCanvas.setOptType("BLUR");
-            }
-            else{
-                myCanvas.setOptType("");
-            }
+            myCanvas.setBlurring(!item.isChecked());
             item.setChecked(!item.isChecked());
         }
         else if(item.getItemId() == 2){
-            if (item.isChecked()){
-                myCanvas.setOptType("COLOR");
-            }
-            else{
-                myCanvas.setOptType("");
-            }
+            myCanvas.setColoring(!item.isChecked());
             item.setChecked(!item.isChecked());
         }
         else if(item.getItemId() == 3){
-            if (item.isChecked()){
-                myCanvas.setOptType("BIG");
-            }
-            else{
-                myCanvas.setOptType("");
-            }
+            myCanvas.setB(!item.isChecked());
             item.setChecked(!item.isChecked());
         }
         else if(item.getItemId() == 4){
@@ -126,11 +111,10 @@ public class MainActivity extends AppCompatActivity {
             else Toast.makeText(getApplicationContext(),
                     "저장에 실패했습니다.",Toast.LENGTH_SHORT).show();
         }
-        else if(v.getId() == R.id.rotate){
+        else {
             c.setChecked(true);
             myCanvas.setStamp(true);
-            myCanvas.setOptType("rotate");
+            myCanvas.setOptType((String) v.getTag());
         }
-        else myCanvas.setOptType((String) v.getTag());
     }
 }
