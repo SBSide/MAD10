@@ -70,7 +70,8 @@ public class MyCanvas extends View {
             mPaint.setColorFilter(new ColorMatrixColorFilter(matrix));
         }
         else mPaint.setColorFilter(null);
-
+        if(penb) mPaint.setStrokeWidth(5);
+        else mPaint.setStrokeWidth(3);
         if(mBitmap != null) canvas.drawBitmap(mBitmap, 0, 0, null);
     }
 
